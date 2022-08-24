@@ -1,4 +1,1 @@
-argparse
-pandas
 requests
-math
