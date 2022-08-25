@@ -3,7 +3,9 @@ ARG FUNCTION_DIR="/function"
 #get the parent image from aws
 FROM python:3.11-rc-slim-buster AS base_stage
 
-RUN mkdir -p ${FUNCTION_DIR}
+ARG FUNCTION_DIR
+
+RUN mkdir -p $FUNCTION_DIR
 
 # Install aws-lambda-cpp build dependencies
 RUN apt-get update && \
@@ -19,8 +21,10 @@ COPY app/* ${FUNCTION_DIR}
 
 # Install the function's dependencies using file requirements.txt
 # from your project folder.
-RUN  pip3 install requests --target ${FUNCTION_DIR} \
-&& pip3 install  --target ${FUNCTION_DIR} awslambdaric
+RUN  pip3 install requests --target $FUNCTION_DIR \
+&& pip3 install awslambdaric --target ${FUNCTION_DIR}
+
+
 
 #multistage build
 FROM python:3.11-rc-slim-buster
